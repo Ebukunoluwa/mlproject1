@@ -1,6 +1,3 @@
- pandas 
- numpy 
- seaborn
- matplotlib
- scikit-learn
- catboost
+pandas
+numpy
+scikit-learn

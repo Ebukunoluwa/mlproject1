@@ -10,7 +10,7 @@ Classifier: Operating System :: OS Independent
 Requires-Python: >=3.9
 Requires-Dist: pandas
 Requires-Dist: numpy
-Requires-Dist: seaborn
+Requires-Dist: scikit-learn
 Provides-Extra: dev
 Requires-Dist: pytest; extra == "dev"
 Requires-Dist: black; extra == "dev"
