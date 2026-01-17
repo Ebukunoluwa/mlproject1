@@ -1,0 +1,8 @@
+pandas
+numpy
+seaborn
+
+[dev]
+pytest
+black
+ruff
