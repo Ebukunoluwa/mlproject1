@@ -9,6 +9,7 @@ sys.path.insert(0, str(project_root))
 from src.exception import CustomException
 from src.logger import logging
 from src.components.data_transformation import DataTransformation, DataTransformationConfig
+from src.components.model_trainer import ModelTrainerConfig, ModelTrainer
 import pandas as pd  
 
 from sklearn.model_selection import train_test_split
@@ -27,23 +28,23 @@ class DataIngestion:
         self.ingestion_config = DataIngestionConfig()
 
     def initiate_data_ingestion(self):
-        print("Enter the data ingestion method or component")
+        logging.info("Enter the data ingestion method or component")
 
         try:
             df = pd.read_csv('notebook/data/stud.csv')
-            print('Read the dataset as dataframe')
+            logging.info('Read the dataset as dataframe')
 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
 
             df.to_csv(self.ingestion_config.raw_data_path, index=False, header=True)
 
-            print("Train test split initiated")
+            logging.info("Train test split initiated")
             train_set, test_set = train_test_split(df, test_size=0.2, random_state=42)
 
             train_set.to_csv(self.ingestion_config.train_data_path, index=False, header=True)
             test_set.to_csv(self.ingestion_config.test_data_path, index=False, header=True)
 
-            print(f'Ingestion of Data is completed | Train shape: {train_set.shape}, Test shape: {test_set.shape}')
+            logging.info(f'Ingestion of Data is completed | Train shape: {train_set.shape}, Test shape: {test_set.shape}')
 
             return (
                 self.ingestion_config.train_data_path,
@@ -56,8 +57,14 @@ class DataIngestion:
 
 
 if __name__ == "__main__":
+    # Step 1: Data Ingestion
     obj = DataIngestion()
-    train_data, test_data, _ = obj.initiate_data_ingestion()  # ✅ FIXED THIS LINE
+    train_data, test_data, _ = obj.initiate_data_ingestion()
 
+    # Step 2: Data Transformation (call ONCE, get 3 values)
     data_transformation = DataTransformation()
-    data_transformation.initiate_data_transformation(train_data, test_data)
+    train_arr, test_arr, _ = data_transformation.initiate_data_transformation(train_data, test_data)  # ✅ FIXED
+
+    # Step 3: Model Training
+    modeltrainer = ModelTrainer()
+    print(modeltrainer.initiate_model_trainer(train_arr, test_arr))  # ✅ Added missing parenthesis
